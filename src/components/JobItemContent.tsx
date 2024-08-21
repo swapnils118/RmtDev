@@ -1,6 +1,6 @@
 import { useActiveId, useJobItem } from "../lib/hooks";
-// import { JobItemExpanded } from "../lib/types";
 import BookmarkIcon from "./BookmarkIcon";
+import Spinner from "./Spinner";
 
 // type JobItemContentProps = {
 //   jobItem: JobItemExpanded | null;
@@ -8,7 +8,11 @@ import BookmarkIcon from "./BookmarkIcon";
 
 export default function JobItemContent() {
   const activeId = useActiveId();
-  const jobItem = useJobItem(activeId);
+  const [jobItem, isLoading] = useJobItem(activeId);
+
+  if (isLoading) {
+    return <LoadingJobContent />;
+  }
 
   if (!jobItem) {
     return <EmptyJobContent />;
@@ -64,9 +68,7 @@ export default function JobItemContent() {
             </div>
             <ul className="qualifications__list">
               {jobItem.qualifications.map((qualification) => (
-                <li key={jobItem.description} className="qualifications__item">
-                  {qualification}
-                </li>
+                <li className="qualifications__item">{qualification}</li>
               ))}
             </ul>
           </section>
@@ -80,9 +82,7 @@ export default function JobItemContent() {
             </div>
             <ul className="reviews__list">
               {jobItem.reviews.map((review) => (
-                <li key={jobItem.description} className="reviews__item">
-                  {review}
-                </li>
+                <li className="reviews__item">{review}</li>
               ))}
             </ul>
           </section>
@@ -95,6 +95,16 @@ export default function JobItemContent() {
             it!
           </p>
         </footer>
+      </div>
+    </section>
+  );
+}
+
+function LoadingJobContent() {
+  return (
+    <section className="job-details">
+      <div>
+        <Spinner />
       </div>
     </section>
   );
