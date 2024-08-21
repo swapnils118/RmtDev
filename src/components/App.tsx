@@ -18,8 +18,6 @@ function App() {
   const [searchText, setSearchText] = useState("");
   const [jobItems, isLoading] = useJobItems(searchText);
 
-  // console.log(activeId);
-
   return (
     <>
       <Background />

@@ -7,12 +7,11 @@ export function useActiveId() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      const id = +window.location.hash.slice(1);
-      //   console.log(id);
+      const id = Number(window.location.hash.slice(1));
       setActiveId(id);
     };
-    handleHashChange();
 
+    handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
 
     return () => {
