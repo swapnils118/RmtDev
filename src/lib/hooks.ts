@@ -25,17 +25,19 @@ import { useQuery } from "@tanstack/react-query";
 
 //   return { jobItem, isLoading } as const;
 // }
+type JobItemApiResponse = {
+  public: boolean;
+  jobItem: JobItemExpanded;
+};
+
 export function useJobItem(id: number | null) {
-  type JobItemApiResponse = {
-    public: boolean;
-    jobItem: JobItemExpanded;
-  };
   const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
     const response = await fetch(`${BASE_API_URL}/${id}`);
     const data = await response.json();
     return data;
   };
-  const { data, isLoading } = useQuery(
+
+  const { data, isInitialLoading } = useQuery(
     ["job-item", id],
     () => (id ? fetchJobItem(id) : null),
     {
@@ -48,6 +50,7 @@ export function useJobItem(id: number | null) {
   );
   console.log(data);
   const jobItem = data?.jobItem;
+  const isLoading = isInitialLoading;
 
   return { jobItem, isLoading } as const;
 }
