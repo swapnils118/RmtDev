@@ -94,23 +94,62 @@ export function useActiveId() {
   return activeId;
 }
 
+// -------------------------------------------------
+
+// export function useJobItems(searchText: string) {
+//   const [jobItems, setJobItems] = useState<JobItem[]>([]);
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   useEffect(() => {
+//     if (!searchText) return;
+//     const fetchData = async () => {
+//       setIsLoading(true);
+//       const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
+//       const data = await response.json();
+//       //   console.log(data.jobItems);
+//       setIsLoading(false);
+//       setJobItems(data.jobItems);
+//     };
+
+//     fetchData();
+//   }, [searchText]);
+
+//   return { jobItems, isLoading } as const;
+// }
+
+// ----------------------------------------------------
+type JobItemsApiResponse = {
+  public: boolean;
+  sorted: boolean;
+  jobItems: JobItem[];
+};
+
+const fetchJobItems = async (
+  searchText: string
+): Promise<JobItemsApiResponse> => {
+  const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
+  const data = await response.json();
+  return data;
+};
+
 export function useJobItems(searchText: string) {
-  const [jobItems, setJobItems] = useState<JobItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!searchText) return;
-    const fetchData = async () => {
-      setIsLoading(true);
-      const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
-      const data = await response.json();
-      //   console.log(data.jobItems);
-      setIsLoading(false);
-      setJobItems(data.jobItems);
-    };
-
-    fetchData();
-  }, [searchText]);
-
-  return { jobItems, isLoading } as const;
+  const { data, isInitialLoading } = useQuery(
+    ["job-items", searchText],
+    () => fetchJobItems(searchText),
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(searchText),
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
+  const jobItems = data?.jobItems;
+  const isLoading = isInitialLoading;
+  return {
+    jobItems,
+    isLoading,
+  };
 }
