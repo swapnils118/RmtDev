@@ -6,15 +6,19 @@ type PaginationControlsProps = {
 
 export default function PaginationControls({
   onClick,
+  currentPage,
 }: PaginationControlsProps) {
   return (
-    <section onClick={() => onClick("previous")} className="pagination">
-      <button className="pagination__button">
+    <section className="pagination">
+      <button
+        onClick={() => onClick("previous")}
+        className="pagination__button"
+      >
         <ArrowLeftIcon />
-        Page 1
+        Page {currentPage - 1}
       </button>
       <button onClick={() => onClick("next")} className="pagination__button">
-        Page 3
+        Page {currentPage + 1}
         <ArrowRightIcon />
       </button>
     </section>
