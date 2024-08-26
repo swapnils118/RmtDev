@@ -10,7 +10,19 @@ export default function PaginationControls({
 }: PaginationControlsProps) {
   return (
     <section className="pagination">
-      <button
+      {currentPage > 1 && (
+        <PaginationButton
+          direction="previous"
+          currentPage={currentPage}
+          onClick={() => onClick("previous")}
+        />
+      )}
+      <PaginationButton
+        direction="next"
+        currentPage={currentPage}
+        onClick={() => onClick("next")}
+      />
+      {/* <button
         onClick={() => onClick("previous")}
         className="pagination__button"
       >
@@ -20,7 +32,39 @@ export default function PaginationControls({
       <button onClick={() => onClick("next")} className="pagination__button">
         Page {currentPage + 1}
         <ArrowRightIcon />
-      </button>
+      </button> */}
     </section>
+  );
+}
+
+type PaginationButtonProps = {
+  direction: "next" | "previous";
+  currentPage: number;
+  onClick: () => void;
+};
+
+function PaginationButton({
+  direction,
+  currentPage,
+  onClick,
+}: PaginationButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={`pagination__button pagination__button--${direction}`}
+    >
+      {direction === "previous" && (
+        <>
+          <ArrowLeftIcon />
+          Page {currentPage - 1}
+        </>
+      )}
+      {direction === "next" && (
+        <>
+          Page {currentPage + 1}
+          <ArrowRightIcon />
+        </>
+      )}
+    </button>
   );
 }
