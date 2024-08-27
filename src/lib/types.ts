@@ -21,4 +21,4 @@ export type JobItemExpanded = JobItem & {
 
 export type SortBy = "relevant" | "recent";
 
-const test = "Test";
+export type PageDirection = "next" | "previous";
