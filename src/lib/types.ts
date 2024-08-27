@@ -20,3 +20,5 @@ export type JobItemExpanded = JobItem & {
 };
 
 export type SortBy = "relevant" | "recent";
+
+const test = "Test";
