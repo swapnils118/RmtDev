@@ -37,11 +37,10 @@ function App() {
         return a.daysAgo - b.daysAgo;
       }
     }) || [];
-  const jobItemsSliced =
-    jobItems?.slice(
-      currentPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE,
-      currentPage * RESULTS_PER_PAGE
-    ) || [];
+  const jobItemsSortedAndSliced = jobItemsSorted.slice(
+    currentPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE,
+    currentPage * RESULTS_PER_PAGE
+  );
 
   // Event handlers / Actions
   const handleChangePage = (direction: "next" | "previous") => {
@@ -53,6 +52,7 @@ function App() {
   };
 
   const handleChangeSortBy = (newSortBy: SortBy) => {
+    setCurrentPage(1);
     setSortBy(newSortBy);
   };
 
@@ -76,7 +76,7 @@ function App() {
             <SortingControls sortBy={sortBy} onClick={handleChangeSortBy} />
           </SidebarTop>
 
-          <JobList jobItems={jobItemsSorted} isLoading={isLoading} />
+          <JobList jobItems={jobItemsSortedAndSliced} isLoading={isLoading} />
 
           <PaginationControls
             currentPage={currentPage}
