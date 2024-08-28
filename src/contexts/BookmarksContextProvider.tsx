@@ -4,6 +4,7 @@ export const BookmarksContext = createContext(null);
 
 export default function BookmarksContextProvider({ children }) {
   const [bookmarkedIds, setBookmarkedIds] = useState<number[]>([]);
+  //   console.log(bookmarkedIds);
 
   const handleToggleBookmark = (id: number) => {
     if (bookmarkedIds.includes(id)) {
