@@ -1,14 +1,23 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { useLocalStorage } from "../lib/hooks";
 
-export const BookmarksContext = createContext(null);
+type BookmarksContext = {
+  bookmarkedIds: number[];
+  handleToggleBookmark: (id: number) => void;
+};
 
-export default function BookmarksContextProvider({ children }) {
+const BookmarksContext = createContext<BookmarksContext | null>(null);
+
+export default function BookmarksContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   //   const bookmarkedIdsFromLocalStorage = JSON.parse(
   //     localStorage.getItem("bookmarkedIds") || "[]"
   //   );
 
-  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage(
+  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage<number[]>(
     "bookmarkedIds",
     []
   );
@@ -36,4 +45,12 @@ export default function BookmarksContextProvider({ children }) {
       {children}
     </BookmarksContext.Provider>
   );
+}
+
+export function useBookmarksContext() {
+  const context = useContext(BookmarksContext);
+  if (!context) {
+    throw new Error("Isn't used within context range");
+  }
+  return context;
 }
