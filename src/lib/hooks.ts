@@ -8,7 +8,7 @@ export function useJobItems(ids: number[]) {
   const results = useQueries({
     queries: ids.map((id) => ({
       queryKey: ["job-item", id],
-      queryFn: () => fetchJobItems(id),
+      queryFn: () => fetchJobItem(id),
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       retry: false,
@@ -16,7 +16,16 @@ export function useJobItems(ids: number[]) {
       onError: handleError,
     })),
   });
-  console.log(results);
+  // console.log(results);
+  const jobItems = results
+    .map((result) => result.data?.jobItem)
+    .filter((jobItem) => jobItem !== undefined);
+  const isLoading = results.some((result) => result.isLoading);
+
+  return {
+    jobItems,
+    isLoading,
+  };
 }
 
 // export function useJobItem(id: number | null) {
@@ -46,20 +55,21 @@ type JobItemApiResponse = {
   jobItem: JobItemExpanded;
 };
 
+const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
+  const response = await fetch(`${BASE_API_URL}/${id}`);
+  // 4xx oe 5xx
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+// ------------------------------------------------
+
 export function useJobItem(id: number | null) {
-  const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
-    const response = await fetch(`${BASE_API_URL}/${id}`);
-    // 4xx oe 5xx
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.description);
-    }
-
-    const data = await response.json();
-    return data;
-  };
-
-  // ------------------------------------------------
   const { data, isInitialLoading } = useQuery(
     ["job-item", id],
     () => (id ? fetchJobItem(id) : null),
