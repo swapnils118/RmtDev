@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { JobItem, JobItemExpanded } from "./types";
 import { BASE_API_URL } from "./constants";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { handleError } from "./utils";
+import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
 
 export function useJobItems(ids: number[]) {
   const results = useQueries({
@@ -224,4 +225,12 @@ export function useOnClickOutside(
       document.removeEventListener("click", handleClick);
     };
   }, [refs, handler]);
+}
+
+export function useActiveIdContext() {
+  const context = useContext(ActiveIdContext);
+  if (!context) {
+    throw new Error("Isn't used within ActiveIdContextProvider context range");
+  }
+  return context;
 }
