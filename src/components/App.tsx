@@ -12,7 +12,6 @@ import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 import { Toaster } from "react-hot-toast";
 import JobListSearch from "./JobListSearch";
-
 function App() {
   return (
     <>
