@@ -1,16 +1,16 @@
-type SearchFormProps = {
-  searchText: string;
-  setSearchText: (searchText: string) => void;
-};
+import { useSearchTextContext } from "../contexts/SearchTextContextProvider";
 
-export default function SearchForm({
-  searchText,
-  setSearchText,
-}: SearchFormProps) {
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newText = e.target.value;
-    setSearchText(newText);
-  };
+// type SearchFormProps = {
+//   searchText: string;
+//   setSearchText: (searchText: string) => void;
+// };
+
+export default function SearchForm() {
+  const { searchText, handleChangeSearchText } = useSearchTextContext();
+  // const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newText = e.target.value;
+  //   setSearchText(newText);
+  // };
 
   return (
     <form
@@ -26,7 +26,9 @@ export default function SearchForm({
 
       <input
         value={searchText}
-        onChange={handleOnChange}
+        onChange={(e) => {
+          handleChangeSearchText(e.target.value);
+        }}
         spellCheck="false"
         type="text"
         required

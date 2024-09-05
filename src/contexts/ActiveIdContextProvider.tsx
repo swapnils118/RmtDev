@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useActiveId, useJobItems, useLocalStorage } from "../lib/hooks";
+import { useActiveId } from "../lib/hooks";
 
 type ActiveIdContext = {
   activeId: number | null;
