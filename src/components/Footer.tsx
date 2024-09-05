@@ -8,7 +8,7 @@ export default function Footer() {
             href="https://github.com/swapnils118?tab=repositories"
             target="_blank"
           >
-            Portfolio
+            Github
           </a>
           .
         </p>
