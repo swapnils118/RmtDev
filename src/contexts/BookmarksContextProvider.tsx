@@ -40,7 +40,6 @@ export default function BookmarksContextProvider({
 
   const { jobItems: bookmarkedJobItems, isLoading } =
     useJobItems(bookmarkedIds);
-
   return (
     <BookmarksContext.Provider
       value={{

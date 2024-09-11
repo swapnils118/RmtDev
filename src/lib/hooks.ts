@@ -18,9 +18,25 @@ export function useJobItems(ids: number[]) {
     })),
   });
   // console.log(results);
-  const jobItems = results
-    .map((result) => result.data?.jobItem)
-    .filter((jobItem) => jobItem !== undefined);
+
+  // const jobItems = results
+  //   .map((result) => result.data?.jobItem)
+  //   .filter((jobItem) => jobItem !== undefined);
+  // const isLoading = results.some((result) => result.isLoading);
+
+  // return {
+  //   jobItems,
+  //   isLoading,
+  // };
+
+  // Refactored the above method to run the build ----------
+  const jobItems = [];
+  for (const result of results) {
+    if (result.data && result.data.jobItem !== undefined) {
+      jobItems.push(result.data.jobItem);
+    }
+  }
+
   const isLoading = results.some((result) => result.isLoading);
 
   return {
@@ -28,6 +44,7 @@ export function useJobItems(ids: number[]) {
     isLoading,
   };
 }
+// ----------------------------
 
 // export function useJobItem(id: number | null) {
 //   const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
@@ -198,7 +215,7 @@ export function useLocalStorage<T>(
     localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]);
 
-  return [value, setValue] as const;
+  return [value, setValue];
 }
 
 // ------------------------------------
